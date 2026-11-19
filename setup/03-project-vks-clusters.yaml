@@ -1,4 +1,4 @@
-# Step 4d: allows only this repo, only CLUSTER_NS, and only Cluster objects.
+# Allows only this repo, only the granted vSphere Namespaces listed below, and only Cluster objects.
 apiVersion: argoproj.io/v1alpha1
 kind: AppProject
 metadata:
@@ -6,10 +6,13 @@ metadata:
   namespace: system-1-argocd               # ARGOCD_NS
 spec:
   sourceRepos:
-  - https://github.com/broadcomryan/vks-bootstrap.git
+  - https://github.com/northerntrust-internal/apm0005794-k8s-vks-optimation.git
   destinations:
-  - name: system-1-ns-poc-1                # CLUSTER_NS (the ManagedEntity's destination)
+  # One entry per granted vSphere Namespace (each needs its setup/02-rbac-<ns>.yaml applied).
+  - name: system-1-ns-poc-1
     namespace: system-1-ns-poc-1
+  - name: system-1-ns-poc-2
+    namespace: system-1-ns-poc-2
   namespaceResourceWhitelist:
   - group: cluster.x-k8s.io
     kind: Cluster

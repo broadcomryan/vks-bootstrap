@@ -15,7 +15,7 @@ spec:
   goTemplateOptions: ["missingkey=error"]
   generators:
   - git:
-      repoURL: https://github.com/northerntrust-internal/apm0005794-k8s-vks-optimation.git
+      repoURL: https://github.com/broadcomryan/vks-bootstrap.git
       revision: main
       directories:
       - path: clusters/*/*

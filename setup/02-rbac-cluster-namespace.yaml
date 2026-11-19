@@ -1,0 +1,27 @@
+# Step 3: lets Argo CD (service account argocd-k8s-sa) manage the cluster's vSphere Namespace,
+# and registers that namespace as an Argo CD destination for the project vks-clusters.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: argocd-k8s-sa-edit
+  namespace: system-1-ns-poc-1        # CLUSTER_NS
+subjects:
+- kind: ServiceAccount
+  name: argocd-k8s-sa
+  namespace: system-1-argocd          # ARGOCD_NS
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: edit
+---
+apiVersion: argocd-service.vsphere.vmware.com/v1alpha1
+kind: ManagedEntity
+metadata:
+  name: ns-system-1-ns-poc-1          # ns-<CLUSTER_NS>
+  namespace: system-1-argocd          # ARGOCD_NS
+spec:
+  argoCDProject: vks-clusters
+  targetRef:
+    apiGroup: ""
+    kind: Namespace
+    name: system-1-ns-poc-1           # CLUSTER_NS

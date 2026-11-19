@@ -2,7 +2,7 @@ apiVersion: cluster.x-k8s.io/v1beta2
 kind: Cluster
 metadata:
   name: wrkld-system-1-poc-1
-  namespace: ssystem-1-ns-poc-1
+  namespace: system-1-ns-poc-1
 spec:
   clusterNetwork:
     pods:

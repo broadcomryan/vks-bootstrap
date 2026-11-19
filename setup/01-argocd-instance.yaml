@@ -7,3 +7,5 @@ metadata:
   namespace: system-1-argocd          # ARGOCD_NS
 spec:
   version: "3.5.3+vmware.1-vks.1"     # CHANGE-ME: a "Recommended" version from the list
+  applicationSet: 
+    enabled: true

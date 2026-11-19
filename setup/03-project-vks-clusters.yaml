@@ -6,7 +6,7 @@ metadata:
   namespace: system-1-argocd               # ARGOCD_NS
 spec:
   sourceRepos:
-  - https://github.com/northerntrust-internal/apm0005794-k8s-vks-optimation.git
+  - https://github.com/broadcomryan/vks-bootstrap.git
   destinations:
   # One entry per granted vSphere Namespace (each needs its setup/02-rbac-<ns>.yaml applied).
   - name: system-1-ns-poc-1

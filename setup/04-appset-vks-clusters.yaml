@@ -1,0 +1,36 @@
+# Every folder clusters/<vsphere-namespace>/<cluster>/ becomes an Application named <cluster>
+# that builds that cluster in <vsphere-namespace>.
+#   folder layout:  clusters/system-1-ns-poc-1/wrkld-system-1-poc-1/cluster.yaml
+#   path segments:  [0]=clusters  [1]=vsphere-namespace  [2]=cluster
+# A namespace only works once it is granted by hand (RoleBinding + ManagedEntity) and listed
+# in the vks-clusters project. Any other folder fails with "not permitted in project".
+# Safety is unchanged: manual sync, no finalizer, preserveResourcesOnDeletion.
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: vks-clusters
+  namespace: system-1-argocd               # ARGOCD_NS
+spec:
+  goTemplate: true
+  goTemplateOptions: ["missingkey=error"]
+  generators:
+  - git:
+      repoURL: https://github.com/northerntrust-internal/apm0005794-k8s-vks-optimation.git
+      revision: main
+      directories:
+      - path: clusters/*/*
+  template:
+    metadata:
+      name: '{{.path.basename}}'           # cluster name; keep cluster names unique across namespaces
+    spec:
+      project: vks-clusters
+      source:
+        repoURL: https://github.com/northerntrust-internal/apm0005794-k8s-vks-optimation.git
+        targetRevision: main
+        path: '{{.path.path}}'
+      destination:
+        name: '{{index .path.segments 1}}' # vSphere Namespace = ManagedEntity destination name
+        namespace: '{{index .path.segments 1}}'
+      # No syncPolicy.automated yet: sync by hand until you trust the diffs.
+  syncPolicy:
+    preserveResourcesOnDeletion: true

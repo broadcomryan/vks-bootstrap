@@ -33,4 +33,12 @@ spec:
         namespace: '{{index .path.segments 1}}'
       # No syncPolicy.automated yet: sync by hand until you trust the diffs.
   syncPolicy:
-    preserveResourcesOnDeletion: true
+    automated:
+      prune: false
+      selfHeal: true
+    retry: 
+      limit: 5
+      backoff: 
+        duration: 30s
+        factor: 2
+        maxDuration: 5m

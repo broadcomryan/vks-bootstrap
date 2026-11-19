@@ -1,0 +1,15 @@
+# Step 4d: allows only this repo, only CLUSTER_NS, and only Cluster objects.
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: vks-clusters
+  namespace: system-1-argocd               # ARGOCD_NS
+spec:
+  sourceRepos:
+  - https://github.com/broadcomryan/vks-bootstrap.git
+  destinations:
+  - name: system-1-ns-poc-1                # CLUSTER_NS (the ManagedEntity's destination)
+    namespace: system-1-ns-poc-1
+  namespaceResourceWhitelist:
+  - group: cluster.x-k8s.io
+    kind: Cluster
